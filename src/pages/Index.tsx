@@ -7,9 +7,9 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-to-b from-dark-purple to-black">
       <div className="container mx-auto px-4 py-16">
         <header className="mb-12 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4 text-gradient">Purple Bank Transfer</h1>
+          <h1 className="text-3xl md:text-4xl font-bold mb-4 text-gradient">Purple Bank International Transfer</h1>
           <p className="text-gray-400 max-w-2xl mx-auto">
-            Easily transfer money domestically or internationally with our secure and fast banking service.
+            Securely transfer money internationally with our fast banking service and optional Stripe integration.
           </p>
         </header>
         
