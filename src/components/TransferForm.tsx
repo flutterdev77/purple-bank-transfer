@@ -28,27 +28,27 @@ const internationalFormSchema = z.object({
   currency: z.string().min(3, { message: "Currency code is required." }),
   description: z.string().optional(),
   useStripe: z.boolean().default(false),
-  // Stripe fields that are conditionally required when useStripe is true
-  stripeAccountId: z.string().optional()
-    .refine(
-      (val, ctx) => {
-        if (ctx.path.includes("stripeAccountId") && ctx.data.useStripe && (!val || val.length < 3)) {
-          return false;
-        }
-        return true;
-      },
-      { message: "Stripe Account ID is required when using Stripe." }
-    ),
-  stripePublishableKey: z.string().optional()
-    .refine(
-      (val, ctx) => {
-        if (ctx.path.includes("stripePublishableKey") && ctx.data.useStripe && (!val || val.length < 10)) {
-          return false;
-        }
-        return true;
-      },
-      { message: "Stripe Publishable Key is required when using Stripe." }
-    ),
+  // Fixed Stripe fields validation
+  stripeAccountId: z.string().optional(),
+  stripePublishableKey: z.string().optional(),
+}).refine((data) => {
+  // If useStripe is true, validate that stripeAccountId is provided
+  if (data.useStripe && (!data.stripeAccountId || data.stripeAccountId.length < 3)) {
+    return false;
+  }
+  return true;
+}, {
+  message: "Stripe Account ID is required when using Stripe.",
+  path: ["stripeAccountId"],
+}).refine((data) => {
+  // If useStripe is true, validate that stripePublishableKey is provided
+  if (data.useStripe && (!data.stripePublishableKey || data.stripePublishableKey.length < 10)) {
+    return false;
+  }
+  return true;
+}, {
+  message: "Stripe Publishable Key is required when using Stripe.",
+  path: ["stripePublishableKey"],
 });
 
 type TransferFormValues = z.infer<typeof internationalFormSchema>;
